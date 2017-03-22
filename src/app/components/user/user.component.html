@@ -1,0 +1,347 @@
+ <nav class="navbar navbar-inverse navbar-fixed-top" >
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">EvEnT BlenD</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <label>Click to logout:</label>
+              <input type="submit" style="text-transform:uppercase" *ngIf='google !="true" && google2 !="true" '   class="btn btn-danger upperCase" value="{{loggedUser}}" (click)="signout(id)">
+              <a *ngIf="google == 'true' || google2 == 'true'"   class="btn btn-danger upperCase" href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000/api/v5/logoutComplete" >G:{{loggedUser}}</a>
+            </div>
+            </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+</nav>
+
+
+<!--calender and botton home panel-->
+<div class="main2" *ngIf="state == 'user'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-4">
+                    <p-calendar [(ngModel)]="value" (onSelect)="getBydate(this.value)" [inline]="true"></p-calendar>
+                    
+                </div>
+                <span class="pull-right">
+                <div class="col-md-3">
+                    <button class="btn btn-admin  btn-default" (click)="showBookedEvent('addNewEvent')">Booked Events</button>
+                </div>
+                </span>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-3">
+                    <button class="btn btn-admin  btn-default" (click)="historyOfBooking()">History</button>
+                </div>
+                <div class="col-md-3 pull-right">
+                    <span >
+                            <select class="form-control" [(ngModel)]="catFilter" name="catFilter" (change)="filterByCategoryUser('user')" >
+                                <option class="form-control" value="0">Category</option>
+                                <option class="form-control" *ngFor="let cat of categoryList">{{cat.categoryname}}</option>
+                            </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Show list of event -->
+<br /><br /><br />
+<div class="panel panel-info main" *ngIf="AdminEventList && state == 'user'">
+    <div class="panel-heading"><b>All Events </b><span class="pull-right"><button class="" (click)="getEventsForUser()">Show All</button></span></div>
+        <div class="panel-body">
+           <div class="row">
+               <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><span>Event</span></th>
+                                <th><span>Category</span></th>
+                                <th><span>Location</span></th>
+                                <th><span>Sponsor</span></th>
+                                <th><span>Date</span></th>
+                                <th><span>Ticket price</span></th>
+
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let AdminEventList of AdminEventList">
+                            <tr>
+                                <td>{{AdminEventList.Event}}</td>
+                                <td>{{AdminEventList.Category}}</td>
+                                <td>{{AdminEventList.Location}}</td>
+                                <td>{{AdminEventList.Sponsor}}</td>
+                                <td>{{AdminEventList.Date}}</td>
+                                <td>{{AdminEventList.Ticket}}</td>
+                                <td><span class="pull-right">
+                                    <button class="btn  btn-success" (click)="bookEventDetails(AdminEventList,AdminEventList._id,AdminEventList.Date)">Book Now.</button>
+
+                                    <button class="btn  btn-info" (click)="showEventDetails(AdminEventList._id,'event')">Details</button>
+                                </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+               </div>
+           </div>
+        </div>
+</div>
+ 
+ <!--show details and book event-->
+<div class="container" *ngIf="state == 'book' || state == 'details'">
+    <div class="row">
+        <div class="col-md-12">
+                <fieldset>
+                    <legend>Complete Details of Event: <span class="pull-right"><button class="btn btn-danger" (click)="stateChange('user')">Back</button></span></legend>
+                    <div class="col-md-6">
+                    <label>Name:</label> <p>{{selectedEvent.Event}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Sponsor:</label> <p>{{selectedEvent.Sponsor}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Category:</label> <p>{{selectedEvent.Category}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Location:</label> <p>{{selectedEvent.Location}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Ticket Rate:</label> <p>{{selectedEvent.Ticket}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Total Seats:</label> <p>{{selectedEvent.T_seats}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Booked Seats:</label> <p>{{selectedEvent.B_seats}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Avalible Seats:</label> <p>{{selectedEvent.F_seats}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Date:</label> <p>{{selectedEvent.Date}}</p> 
+                    </div>
+                    <div class="col-md-12">
+                    <label>Info About Event:</label> <p>{{selectedEvent.info}}</p> 
+                    </div>
+                </fieldset>
+                <br /><br /><br />
+            <fieldset *ngIf = "state == 'book' || state == 'details'">
+                
+                <legend><p>Enter Number of Seats</p><div class="col-md-3"><input type="text" on-focus="removeError('maxSeat')" on-focusout="checkError('maxSeat')" [(ngModel)]="B_seats" name="B_seats" class="form-control" placeholder="Max Number of Booking 10" ></div></legend>
+                <br />
+                <div *ngIf = "error == 'maxSeat'"  style="margin-left: 19px; border-bottom-width: 5px;border-color: red;" class="shadow col-md-3"><span style="color: red">please enter seats 1-10 only</span></div>
+                <div *ngIf = "error == 'noSeat'"  style="margin-left: 19px; border-bottom-width: 5px;border-color: red;" class="shadow col-md-3"><span style="color: red"> Seats not Avalible</span></div>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <button class="btn  btn-primary" (click)="bookEvent()">Book Event</button>
+                    </div>
+                    <div class="col-md-2">
+                        
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn  btn-danger" (click)="stateChange('user')">Back</button>
+                    </div>
+                </div>
+            </fieldset>       
+    </div>
+</div>
+</div>
+
+<!--calender and botton booked panel panel-->
+<div class="main" *ngIf=" state == 'addNewEvent'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-4">
+                    <p-calendar [(ngModel)]="value" (onSelect)="getBydateBookedEvent(this.value)" [inline]="true"></p-calendar>
+                    <button class="btn  btn-block" style="width: 235px"  (click)="showBookedEvent('addNewEvent')">Show All</button>
+                </div>
+                <span class="pull-right">
+                </span>
+            </div>
+            <div class="col-md-6">
+               
+                <div class="col-md-3 pull-right">
+                    <span >
+                            <select class="form-control" [(ngModel)]="catFilter" name="catFilter" (change)="filterByCategoryUser('booked')" >
+                                <option class="form-control" value="0">Category</option>
+                                <option class="form-control" *ngFor="let cat of categoryList">{{cat.categoryname}}</option>
+                            </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--show Booked event and cancel also-->
+<br /><br /><br />
+<div class="panel panel-info main" *ngIf="BookedEventList && state == 'addNewEvent'">
+    <div class="panel-heading"><b>All Booked Events </b><span class="pull-right"><button class="btn-danger"  (click)="getEventsForUser()">Back</button></span></div>
+        <div class="panel-body">
+           <div class="row">
+               <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><span>Event</span></th>
+                                <th><span>Category</span></th>
+                                <th><span>Location</span></th>
+                                <th><span>Sponsor</span></th>
+                                <th><span>Date</span></th>
+                                <th><span>Ticket price</span></th>
+                                <th><span>Seats Booked</span></th>
+                                
+
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let BookedEventList of BookedEventList">
+                            <tr>
+                                <td>{{BookedEventList.Event}}</td>
+                                <td>{{BookedEventList.Category}}</td>
+                                <td>{{BookedEventList.Location}}</td>
+                                <td>{{BookedEventList.Sponsor}}</td>
+                                <td>{{BookedEventList.Date}}</td>
+                                <td>{{BookedEventList.Ticket}}</td>
+                                <td>{{BookedEventList.B_seats}}</td>
+                                <td><span class="pull-right">
+                                    <button class="btn  btn-danger" (click)="cancelEvent(BookedEventList._id,BookedEventList.Event_id,BookedEventList.B_seats)">Cancel</button>
+
+                                    <button class="btn  btn-info" (click)="showEventDetails(BookedEventList._id,'booked')">Details</button>
+                                </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+               </div>
+           </div>
+        </div>
+</div>
+
+
+<!--View Details of event -->
+<div class="container" *ngIf="state == 'detail-show'">
+    <div class="row">
+        <div class="col-md-12">
+                <fieldset>
+                    <legend>Complete Details of {{Eventtext}}: <span class="pull-right"><button class="btn btn-danger" (click)="stateChange('user')">Back</button></span></legend>
+                    <div class="col-md-6">
+                    <label>Name:</label> <p>{{showEventsDetails.Event}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Sponsor:</label> <p>{{showEventsDetails.Sponsor}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Category:</label> <p>{{showEventsDetails.Category}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Location:</label> <p>{{showEventsDetails.Location}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Ticket Rate:</label> <p>{{showEventsDetails.Ticket}}</p> 
+                    </div>
+                    <div class="col-md-6" *ngIf="showEventsDetails.T_seats">
+                    <label>Total Seats:</label> <p>{{showEventsDetails.T_seats}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Booked Seats:</label> <p>{{showEventsDetails.B_seats}}</p> 
+                    </div>
+                    <div class="col-md-6" *ngIf="showEventsDetails.F_seats">
+                    <label>Avalible Seats:</label> <p >{{showEventsDetails.F_seats}}</p> 
+                    </div>
+                    <div class="col-md-6">
+                    <label>Date:</label> <p>{{showEventsDetails.Date}}</p> 
+                    </div>
+                    <div class="col-md-6" *ngIf="showEventsDetails.Active == true">
+                    <label>Status of Booking:</label> <p>Booked</p> 
+                    </div>
+                    <div class="col-md-6" *ngIf="showEventsDetails.Active == false">
+                    <label>Status of Booking:</label> <p>Booking Canceled</p> 
+                    </div>
+                    <div class="col-md-12">
+                    <label>Info About Event:</label> <p>{{showEventsDetails.info}}</p> 
+                    </div>
+                </fieldset>
+        </div>
+    </div>
+</div>
+<!-- -->
+
+
+<!--calender and botton history panel panel-->
+<div class="main" *ngIf=" state == 'history'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="col-md-4">
+                    <p-calendar [(ngModel)]="value" (onSelect)="historyOfBookingbydate(this.value)" [inline]="true"></p-calendar>
+                    <button class="btn  btn-block" style="width: 235px"  (click)="historyOfBooking()">Show All</button>
+                </div>
+                
+               
+                
+            </div>
+            <div class="col-md-6">
+            
+              
+                
+                <div class="col-md-3 pull-right">
+                    <span >
+                            <select class="form-control" [(ngModel)]="catFilter" name="catFilter" (change)="filterByCategoryUser('history')" >
+                                <option class="form-control" value="0">Category</option>
+                                <option class="form-control" *ngFor="let cat of categoryList">{{cat.categoryname}}</option>
+                            </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--History of all booking by user-->
+<br /><br /><br />
+<div class="panel panel-info main" *ngIf="history && state == 'history'">
+    <div class="panel-heading"><b>All Events </b><span class="pull-right"><button class="" (click)="getEventsForUser()">back</button></span></div>
+        <div class="panel-body">
+           <div class="row">
+               <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><span>Event</span></th>
+                                <th><span>Category</span></th>
+                                <th><span>Location</span></th>
+                                <th><span>Sponsor</span></th>
+                                <th><span>Date</span></th>
+                                <th><span>Ticket price</span></th>
+
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let history of history">
+                            <tr>
+                                <td>{{history.Event}}</td>
+                                <td>{{history.Category}}</td>
+                                <td>{{history.Location}}</td>
+                                <td>{{history.Sponsor}}</td>
+                                <td>{{history.Date}}</td>
+                                <td>{{history.Ticket}}</td>
+                                <td><span class="pull-right">
+                                    <button class="btn  btn-info" (click)="showEventDetails(history._id,'history')">Details</button>
+                                </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+               </div>
+           </div>
+        </div>
+</div>

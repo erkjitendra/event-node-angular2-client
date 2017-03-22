@@ -1,0 +1,102 @@
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">EvEnT BlenD</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" (submit)=getUser(email1.value,pass1.value)>
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control" autofocus #email1>
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control" #pass1>
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+            <button class="loginBtn loginBtn--google" (click)="googleSignIn()">Login with Google</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <br /><br /><br /><br />
+    <div class="container">
+    <div class="row">
+        <h3 class="col-sm-offset-3 col-sm-6">Create your Account</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+        </div>
+        <div class="col-sm-offset-1 col-sm-2">
+        </div>
+        <div class="col-md-6">
+            <form (submit)="addUser(fname,lname,email,F,M,pass,repass,phone)" class="form" >
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="text" name="firstname" value="" class="form-control loginForm" placeholder="First Name" #fname />                        </div>
+                    <div class="col-md-6">
+                        <input type="text" name="lastname" value="" class="form-control loginForm " placeholder="Last Name" #lname  />                        </div>
+                </div>
+                <input type="email" name="email" on-focusout="checkError('email',email)" on-focus="removeError('email')" value="" class="form-control  loginForm" placeholder="Your Email" #email />
+                <div class="alert alert-warning loginForm" *ngIf="error == 'email'">Email address is in valid....</div>
+                <input type="password" name="password" value="" class="form-control loginForm " placeholder="Password must be be 8 char " #pass  />
+                <input type="password" name="confirm_password" value="" class="form-control loginForm " placeholder="Confirm Password" #repass />
+                <div class="alert alert-warning loginForm" *ngIf="pass.value != repass.value">plz enter correct password</div>
+                <input type="number" name="phone" on-focusout="checkError('phone',phone)" on-focus="removeError('phone')" value="" class="form-control loginForm " placeholder="Enter your mobile number" #phone />
+                <div class="alert alert-warning loginForm" *ngIf="error == 'phone'">Phone number is not valid....</div>
+                    <label>Birth Date</label>
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <select class = "form-control" onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='rmonth' name='rmonth'>
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                                <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+                                <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <select class = "form-control" onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='rday' name='rday'>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                                <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                                <option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                                <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+                                <option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="21">21</option>
+                                <option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option>
+                                <option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option>
+                                <option value="30">30</option><option value="31">31</option>
+                            </select>                        
+                        </div>
+                        <div class="col-xs-4 col-md-4"  *ngIf="years">
+                            <select class = "form-control " onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='ryear' name='ryear'>
+                                <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                            </select>
+                        </div>
+                    </div><br />
+                    <label>Gender : </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="M" id=male #F />Male
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="F" id=female #M />Female
+                    </label>
+                    <div class="alert alert-warning loginForm" *ngIf="state == 'filldatacorrectly'">Fill all field with correct values</div>
+                    <br />
+                <span class="help-block">By clicking Create my account, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
+                <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">Create my account</button>
+               <span style="text-align: center" class="btn"><a href="http://localhost:3000/auth/google">Click here to Sign-Up via Gmail Account.............</a></span>
+            </form>          
+        </div>
+      </div>
+    </div>
+    
+

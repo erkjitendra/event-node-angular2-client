@@ -1,0 +1,24 @@
+<div class="faild-err" *ngIf="error && error == 'notRegisteredUser'">
+    <div class="col-sm-6 col-md-6">
+                <div class="alert alert-warning">
+                    
+                    <span class="glyphicon glyphicon-record"></span> <strong>Warning Message</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        Plz Register First here. <a href="/">GO.....</a></p>
+                </div>
+            </div>
+</div>
+
+<div class="faild-err" *ngIf="error && error == 'user exists'">
+    <div class="col-sm-6 col-md-6">
+                <div class="alert alert-warning">
+                 
+                    <span class="glyphicon glyphicon-record"></span> <strong>Warning Message</strong>
+                    <hr class="message-inner-separator">
+                    <p>
+                        You are allready Registered on this app<br >
+                        please login via Id and Password <a href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:4200">GO.....</a></p>
+                </div>
+            </div>
+</div>

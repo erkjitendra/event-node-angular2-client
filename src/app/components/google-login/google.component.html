@@ -1,0 +1,53 @@
+<div class="container" style="margin-top: 70px" *ngIf="state != 'signIn'">
+    <div class="col-md-4">
+        
+    </div>
+    <div class="col-md-4">
+        <label class="form-group">Fill Some Required detalis For Sign-up</label>
+    <form class="form" (submit)="createAccountViaGoogle(pass,repass,gender)">
+        <input type="password" name="password" value="" class="form-control loginForm " placeholder="Password" #pass  />
+        <input type="password" name="confirm_password" value="" class="form-control loginForm " placeholder="Confirm Password" #repass />
+        <div class="alert alert-warning loginForm" *ngIf="state == 'passerr'">plz enter correct password</div>
+            <label>Birth Date</label>
+            <div class="row">
+                <div class="col-xs-4 col-md-4">
+                    <select class = "form-control" onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='rmonth' name='rmonth'>
+                        <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                        <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+                        <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+                        <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <select class = "form-control" onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='rday' name='rday'>
+                        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                        <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                        <option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                        <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+                        <option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="21">21</option>
+                        <option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option>
+                        <option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option>
+                        <option value="30">30</option><option value="31">31</option>
+                    </select>                        
+                </div>
+                <div class="col-xs-4 col-md-4"  *ngIf="years">
+                    <select class = "form-control " onmousedown="this.size=10;"  onchange='this.size=0;' onblur="this.size=0;" [(ngModel)]='ryear' name='ryear'>
+                        <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
+                    </select>
+                </div>
+            </div><br />
+            <label>Gender : </label>
+            <label class="radio-inline">
+                <input type="radio" name="gender" value="M" id=male #gender />Male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="gender" value="F" id=female #gender />Female
+            </label>
+            <br />
+        <span class="help-block">By clicking Create my account, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
+        <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">Create my account</button>
+        <a href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:4200">click here if dont want to register ...</a>
+    </form>
+    </div>
+</div>
+
